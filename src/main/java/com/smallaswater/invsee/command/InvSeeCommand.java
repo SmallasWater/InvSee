@@ -110,7 +110,6 @@ public class InvSeeCommand extends Command {
                     sender.sendMessage(TextFormat.colorize('&', (handle.isUp() ? "&a开启" : "&c关闭") + "自动刷新背包"));
                 }else{
                     sender.sendMessage(TextFormat.colorize('&', "&c离线背包无法实时更新"));
-
                 }
                 break;
             case "p":

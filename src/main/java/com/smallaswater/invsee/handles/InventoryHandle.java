@@ -7,6 +7,7 @@ import cn.nukkit.Server;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import com.smallaswater.invsee.InvSeeMainClass;
 import com.smallaswater.invsee.inventorys.OffOnlineInventory;
 
 import java.util.Map;
@@ -98,8 +99,13 @@ public class InventoryHandle {
     }
 
     public void synchronizationInventory(){
-        this.operationInventory = player.getInventory();
-        this.setOffhandOperationInventory(player.getOffhandInventory().getItem(0));
+        if (this.isUp()) {
+            return; //背包同步时以被查看着的背包为准
+        }
+        if (this.operationInventory != null) {
+            this.operationInventory.setContents(this.player.getInventory().getContents());
+        }
+        this.setOffhandOperationInventory(this.player.getOffhandInventory().getItem(0));
     }
 
     public void onUpdate(){
@@ -112,6 +118,7 @@ public class InventoryHandle {
             }
         }
         if(changePlayer instanceof OfflinePlayer){
+            //Always true?
             if(operationInventory instanceof PlayerInventory){
                 operationInventory = OffOnlineInventory.onLineInventoryToOffLine((PlayerInventory) operationInventory);
             }
@@ -158,7 +165,7 @@ public class InventoryHandle {
     public boolean update = true;
 
     public void save(){
-        update =  false;
+        update = false;
         syncToPlayer();
         player.getInventory().setContents(masterInventory);
         player.getOffhandInventory().setItem(0,offhandMasterInventory);
@@ -169,10 +176,11 @@ public class InventoryHandle {
         return operationInventory;
     }
 
-
-
     public void setOffhandOperationInventory(Item offhandOperationInventory) {
         this.offhandOperationInventory = offhandOperationInventory;
+        if (this.operationInventory instanceof OffOnlineInventory) {
+            ((OffOnlineInventory) this.operationInventory).setOffhandInventory(offhandOperationInventory);
+        }
     }
 
     @Override
