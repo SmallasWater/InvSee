@@ -1,0 +1,11 @@
+name: InvSee
+main: com.smallaswater.invsee.InvSeeMainClass
+version: 1.0.2
+api: 1.0.11
+load: POSTWORLD
+
+
+permissions:
+  inv:
+    description: "查询/编辑 背包"
+    default: op
