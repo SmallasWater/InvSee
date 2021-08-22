@@ -21,16 +21,22 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class InvSeeMainClass extends PluginBase implements Listener {
 
+    private static InvSeeMainClass invSeeMainClass;
+
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
 
     private static ArrayList<InventoryHandle> handles = new ArrayList<>();
 
+    public static InvSeeMainClass getInstance() {
+        return invSeeMainClass;
+    }
 
     @Override
     public void onEnable() {
-        this.getLogger().info("InvSee 插件加载成功~");
-       service.execute(()->{
-           while (true) {
+        invSeeMainClass = this;
+
+        service.execute(()->{
+            while (true) {
                if (handles.size() > 0) {
                    Iterator<InventoryHandle> handleIterator = handles.iterator();
                    InventoryHandle handle;
@@ -61,8 +67,12 @@ public class InvSeeMainClass extends PluginBase implements Listener {
                }
            }
         });
+
         this.getServer().getPluginManager().registerEvents(this,this);
-        this.getServer().getCommandMap().register("inv",new InvSeeCommand());
+
+        this.getServer().getCommandMap().register("inv", new InvSeeCommand());
+
+        this.getLogger().info("InvSee 插件加载成功~");
     }
 
     public static InventoryHandle getHandle(Player player){
