@@ -7,6 +7,7 @@ import cn.nukkit.Server;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import com.smallaswater.invsee.InvSeeMainClass;
 import com.smallaswater.invsee.inventorys.OffOnlineInventory;
 
 import java.util.Map;
@@ -98,7 +99,9 @@ public class InventoryHandle {
     }
 
     public void synchronizationInventory(){
-        this.operationInventory = player.getInventory();
+        if (this.operationInventory != null) {
+            this.operationInventory.setContents(this.player.getInventory().getContents());
+        }
         this.setOffhandOperationInventory(player.getOffhandInventory().getItem(0));
     }
 
@@ -112,6 +115,7 @@ public class InventoryHandle {
             }
         }
         if(changePlayer instanceof OfflinePlayer){
+            //Always true?
             if(operationInventory instanceof PlayerInventory){
                 operationInventory = OffOnlineInventory.onLineInventoryToOffLine((PlayerInventory) operationInventory);
             }
@@ -158,7 +162,7 @@ public class InventoryHandle {
     public boolean update = true;
 
     public void save(){
-        update =  false;
+        update = false;
         syncToPlayer();
         player.getInventory().setContents(masterInventory);
         player.getOffhandInventory().setItem(0,offhandMasterInventory);
@@ -168,8 +172,6 @@ public class InventoryHandle {
     public Inventory getOperationInventory() {
         return operationInventory;
     }
-
-
 
     public void setOffhandOperationInventory(Item offhandOperationInventory) {
         this.offhandOperationInventory = offhandOperationInventory;

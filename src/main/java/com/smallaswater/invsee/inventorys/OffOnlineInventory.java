@@ -3,11 +3,13 @@ package com.smallaswater.invsee.inventorys;
 import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
+import com.smallaswater.invsee.InvSeeMainClass;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -21,7 +23,7 @@ import java.util.regex.Pattern;
  */
 public class OffOnlineInventory extends PlayerInventory {
     private static final Pattern P = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}.dat$");
-    private OfflinePlayer player;
+    private final OfflinePlayer player;
     private CompoundTag namedTag;
     private Item offhandInventory = new Item(0);
 
@@ -62,8 +64,7 @@ public class OffOnlineInventory extends PlayerInventory {
     }
     //逆向
 
-    public void save(){
-
+    public void save() {
         ListTag<CompoundTag> inventoryTag = new ListTag<>("Inventory");
         for (int slot = 0; slot < 9; ++slot) {
             inventoryTag.add(new CompoundTag()
@@ -108,12 +109,12 @@ public class OffOnlineInventory extends PlayerInventory {
         OffOnlineInventory inventory = new OffOnlineInventory(player);
         CompoundTag namedTag;
         try {
-            Class playerClass = Class.forName("cn.nukkit.OfflinePlayer");
+            Class<?> playerClass = Class.forName("cn.nukkit.OfflinePlayer");
             Field o = playerClass.getDeclaredField("namedTag");
             o.setAccessible(true);
-            namedTag = (CompoundTag)o.get(player);
+            namedTag = (CompoundTag) o.get(player);
         } catch (Exception var8) {
-            var8.printStackTrace();
+            InvSeeMainClass.getInstance().getLogger().error("获取离线玩家数据时发生错误：", var8);
             return inventory;
         }
         inventory = new OffOnlineInventory(Server.getInstance().getOfflinePlayerData(player.getUniqueId()),player);
