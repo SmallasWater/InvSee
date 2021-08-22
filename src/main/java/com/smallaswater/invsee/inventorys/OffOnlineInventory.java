@@ -33,15 +33,13 @@ public class OffOnlineInventory extends PlayerInventory {
         this.player = player;
     }
 
-
-
     private OffOnlineInventory(CompoundTag tag,OfflinePlayer player) {
         super(null);
         this.player = player;
         this.namedTag = tag;
     }
 
-    private void setOffhandInventory(Item offhandInventory) {
+    public void setOffhandInventory(Item offhandInventory) {
         this.offhandInventory = offhandInventory;
     }
 
@@ -102,7 +100,7 @@ public class OffOnlineInventory extends PlayerInventory {
     }
 
     public Item getOffhandInventory() {
-        return offhandInventory;
+        return this.offhandInventory;
     }
 
     public static OffOnlineInventory getPlayerInventoryByOffOnline(OfflinePlayer player) {

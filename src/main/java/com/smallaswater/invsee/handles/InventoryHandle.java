@@ -175,6 +175,9 @@ public class InventoryHandle {
 
     public void setOffhandOperationInventory(Item offhandOperationInventory) {
         this.offhandOperationInventory = offhandOperationInventory;
+        if (this.operationInventory instanceof OffOnlineInventory) {
+            ((OffOnlineInventory) this.operationInventory).setOffhandInventory(offhandOperationInventory);
+        }
     }
 
     @Override
