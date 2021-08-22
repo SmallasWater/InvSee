@@ -1,6 +1,7 @@
 package com.smallaswater.invsee.command;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
@@ -41,6 +42,14 @@ public class InvSeeCommand extends Command {
                     case "c":
                         if(args.length > 1){
                             String name = args[1];
+                            Player player = Server.getInstance().getPlayer(name);
+                            if(player != null){
+                                name = player.getName();
+                                if(player.getName().equals(sender.getName())){
+                                    sender.sendMessage(TextFormat.colorize('&',"&c请不要使用此指令编辑自己的背包"));
+                                    return true;
+                                }
+                            }
                             if(InvSeeMainClass.getHandle((Player)sender) != null){
                                 sender.sendMessage(TextFormat.colorize('&',"&c请先退出当前玩家背包 再进入编辑背包模式"));
                                 return true;
