@@ -99,10 +99,13 @@ public class InventoryHandle {
     }
 
     public void synchronizationInventory(){
+        if (this.isUp()) {
+            return; //背包同步时以被查看着的背包为准
+        }
         if (this.operationInventory != null) {
             this.operationInventory.setContents(this.player.getInventory().getContents());
         }
-        this.setOffhandOperationInventory(player.getOffhandInventory().getItem(0));
+        this.setOffhandOperationInventory(this.player.getOffhandInventory().getItem(0));
     }
 
     public void onUpdate(){
