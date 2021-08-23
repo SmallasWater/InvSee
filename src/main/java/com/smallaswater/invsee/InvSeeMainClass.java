@@ -55,9 +55,9 @@ public class InvSeeMainClass extends PluginBase implements Listener {
                        if (handle.isSync() && !handle.isUp() && handle.update) {
                            handle.syncToPlayer();
                        }
-                       if(handle.update) {
-                           handle.synchronizationInventory();
-                       }
+//                       if(handle.update && handle.isSync()) {
+//                           handle.synchronizationInventory();
+//                       }
                    }
                }
                try {

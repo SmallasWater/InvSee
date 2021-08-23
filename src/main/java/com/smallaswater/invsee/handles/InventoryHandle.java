@@ -98,20 +98,22 @@ public class InventoryHandle {
         this.close = close;
     }
 
-    public void synchronizationInventory(){
-        if (this.isUp()) {
-            return; //背包同步时以被查看着的背包为准
-        }
-        if (this.operationInventory != null) {
-            this.operationInventory.setContents(this.player.getInventory().getContents());
-        }
-        this.setOffhandOperationInventory(this.player.getOffhandInventory().getItem(0));
-    }
+    //突然发现这个地方会导致一个打开背包就同步给玩家的问题...
+
+//    public void synchronizationInventory(){
+//        if (this.isUp()) {
+//            return; //背包同步时以被查看着的背包为准
+//        }
+//        if (this.operationInventory != null) {
+//            this.operationInventory.setContents(this.player.getInventory().getContents());
+//        }
+//        this.setOffhandOperationInventory(this.player.getOffhandInventory().getItem(0));
+//    }
 
     public void onUpdate(){
         if(changePlayer instanceof Player){
             if(changePlayer.isOnline()) {
-                operationInventory = ((Player) changePlayer).getInventory();
+                operationInventory.setContents(((Player) changePlayer).getInventory().getContents());
                 offhandOperationInventory = ((Player) changePlayer).getOffhandInventory().getItem(0);
             }else{
                 changePlayer = new OfflinePlayer(Server.getInstance(),changePlayer.getUniqueId());
@@ -138,8 +140,8 @@ public class InventoryHandle {
     public void syncToPlayer(){
         if(changePlayer instanceof Player){
             if(changePlayer.isOnline()) {
-                ((Player) changePlayer).getInventory().setContents(operationInventory.getContents());
-                ((Player) changePlayer).getOffhandInventory().setItem(0,offhandOperationInventory);
+                ((Player) changePlayer).getInventory().setContents(player.getInventory().getContents());
+                ((Player) changePlayer).getOffhandInventory().setItem(0,player.getOffhandInventory().getItem(0));
             }else{
                 changePlayer = new OfflinePlayer(Server.getInstance(),changePlayer.getUniqueId());
             }
@@ -149,8 +151,8 @@ public class InventoryHandle {
                 //解决突然在线bug
                 changePlayer = changePlayer.getPlayer();
 
-                ((Player) changePlayer).getInventory().setContents(operationInventory.getContents());
-                ((Player) changePlayer).getOffhandInventory().setItem(0,offhandOperationInventory);
+                ((Player) changePlayer).getInventory().setContents(player.getInventory().getContents());
+                ((Player) changePlayer).getOffhandInventory().setItem(0,player.getOffhandInventory().getItem(0));
                 return;
             }
             if(!(operationInventory instanceof OffOnlineInventory)) {
