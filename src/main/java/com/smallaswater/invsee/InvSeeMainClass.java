@@ -8,6 +8,7 @@ import cn.nukkit.plugin.PluginBase;
 import com.smallaswater.invsee.command.InvSeeCommand;
 import com.smallaswater.invsee.handles.InventoryHandle;
 import com.smallaswater.invsee.inventorys.OffOnlineInventory;
+import com.smallaswater.invsee.utils.form.WindowListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +70,7 @@ public class InvSeeMainClass extends PluginBase implements Listener {
         });
 
         this.getServer().getPluginManager().registerEvents(this,this);
+        this.getServer().getPluginManager().registerEvents(new WindowListener(), this);
 
         this.getServer().getCommandMap().register("inv", new InvSeeCommand());
 
