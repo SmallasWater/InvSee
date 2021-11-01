@@ -108,7 +108,4 @@ public class InvSeeMainClass extends PluginBase implements Listener {
         return false;
     }
 
-
-
-
 }

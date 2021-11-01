@@ -8,6 +8,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.utils.TextFormat;
 import com.smallaswater.invsee.InvSeeMainClass;
 import com.smallaswater.invsee.handles.InventoryHandle;
+import com.smallaswater.invsee.utils.FormHelper;
 
 /**
  * @author SmallasWater
@@ -15,6 +16,7 @@ import com.smallaswater.invsee.handles.InventoryHandle;
  * Package com.smallaswater.invsee.command
  */
 public class InvSeeCommand extends Command {
+
     public InvSeeCommand() {
         super("inv", "查询编辑背包","/inv help");
         this.setPermission("inv");
@@ -65,6 +67,11 @@ public class InvSeeCommand extends Command {
                         return true;
 
                     default:
+                        InventoryHandle handle = InvSeeMainClass.getHandle((Player) sender);
+                        if (handle == null) {
+                            FormHelper.sendMain((Player) sender);
+                            return true;
+                        }
                         break;
                 }
                 return cmdChange(sender, args);
