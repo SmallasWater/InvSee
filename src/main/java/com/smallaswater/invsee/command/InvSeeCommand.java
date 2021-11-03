@@ -67,16 +67,17 @@ public class InvSeeCommand extends Command {
                         return true;
 
                     default:
-                        InventoryHandle handle = InvSeeMainClass.getHandle((Player) sender);
-                        if (handle == null) {
-                            FormHelper.sendMain((Player) sender);
-                            return true;
-                        }
                         break;
                 }
                 return cmdChange(sender, args);
             } else {
-                return false;
+                InventoryHandle handle = InvSeeMainClass.getHandle((Player) sender);
+                if (handle == null) {
+                    FormHelper.sendMain((Player) sender);
+                }else {
+                    FormHelper.sendMain((Player) sender, handle);
+                }
+                return true;
             }
         }else{
             sender.sendMessage("请不要在控制台执行");
@@ -135,7 +136,6 @@ public class InvSeeCommand extends Command {
             case "save":
                 handle.save();
                 sender.sendMessage(TextFormat.colorize('&', "&a当前编辑已保存"));
-
                 break;
             default:break;
         }
